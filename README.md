@@ -1,4 +1,4 @@
-# Single Electron & Double Beta Test
+# The majorana Project
 ---
 
 ## File Structure

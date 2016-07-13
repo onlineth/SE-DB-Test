@@ -1,4 +1,4 @@
-#graphtest.py
+# The majorana Project
 
 ##Tests graph algorithms for voxelized tracks
 
