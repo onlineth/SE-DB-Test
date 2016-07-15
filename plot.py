@@ -8,31 +8,18 @@ import sys
 def main_plot(file):
     # Main plot function, returns the plot
 
+    # temp
+    # file = 'double_beta/mctruehits_trk_0.dat'
+
     plot_trks = True
 
     evt = 0
 
-    # print '   Scanning event number   ', evt + iev_start
-    # print file
-    # start_time = timeit.default_timer()
-    # -------------------------------------------------------------------------
-    # Read in the voxelized and MC tracks
-    # -------------------------------------------------------------------------
-    #     vtrk_file = "{0}/voxels_trk_{1}.dat".format(dat_base,evt)
-    #     mctrk_file = "{0}/mctruehits_trk_{1}.dat".format(dat_base,evt)
-    #     vtrk_file = mctrk_file
     vtrk_file = file
     mctrk_file = file
     # print "===>  Event   ",evt + iev_start
     evt += 1
-    # If no file exists for this event, continue to the next.
 
-    # if(not os.path.isfile(vtrk_file) or not os.path.isfile(mctrk_file)):
-    # print vtrk_file
-    # print "File not found"
-    # continue
-
-    # Read the voxelized track.
     trktbl = np.loadtxt(vtrk_file)
     vtrk_ID_temp = trktbl[:, 0]
     vtrk_x = trktbl[:, 1]
@@ -74,20 +61,6 @@ def main_plot(file):
 
         psize = 5000 * mctrk_E
         s3 = ax3.scatter(mctrk_x, mctrk_y, mctrk_z, s=psize)
-
-        #         for x,y,z,E in zip(mctrk_x,mctrk_y,mctrk_z,mctrk_E):
-        #             s3 = ax3.plot(mctrk_x,mctrk_y,mctrk_z,'s',
-        #                       markersize=int(mctrk_E*5000))
-        # s3.set_edgecolors = s3.set_facecolors = lambda *args:None
-        # this disables automatic setting of alpha relative of distance to camera
-
-        #         colors = cm.rainbow(np.linspace(0, 1, len(mctrk_x)))
-        #         ax3 = fig.add_subplot(111, projection='3d')
-        #         for px,py,pz,c in zip(mctrk_x,mctrk_y,mctrk_z,colors):
-        #             #ax3.plot(1.,1.,1.,'s')
-        #             ax3.plot([px],[py],[pz],'.',color=c,markersize=4)
-        #         ax3.plot([mctrk_x[0]],[mctrk_y[0]],[mctrk_z[0]],'o',color='blue',markersize=5)
-        #         ax3.plot([mctrk_x[-1]],[mctrk_y[-1]],[mctrk_z[-1]],'s',color='blue',markersize=5)
 
         ax3.set_xlabel("x (mm)")
         ax3.set_ylabel("y (mm)")
