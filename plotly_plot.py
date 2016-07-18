@@ -2,6 +2,7 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 import numpy as np
 import pandas as pd
+import cufflinks as cf
 import sys
 from plotly import __version__
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
@@ -10,8 +11,7 @@ import math
 
 def PlotlyPlotPloter(file, lines=0):
 
-    # file = 'single_electron/mctruehits_trk_10508.dat'
-    # lines = 1
+    cf.set_config_file(offline=False, world_readable=True, theme='ggplot')
 
     df = pd.read_csv(file, header=None, delimiter=r"\s+")
 
@@ -65,3 +65,5 @@ def PlotlyPlotPloter(file, lines=0):
 
 # def distance(x, y, z):
 #     return math.sqrt((x[1]-x[0])**2 + (y[1]-y[0])**2 + (z[1]-z[0])**2)
+
+PlotlyPlotPloter('single_electron/mctruehits_trk_10508.dat', 1)
