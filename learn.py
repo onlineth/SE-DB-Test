@@ -1,11 +1,9 @@
 import plot
 import os
 import sys
-import plotly_plot
+# import plotly_plot
 import learn_functions
-
-# Old plot function
-# import plot
+import plot
 
 # Double Beta or Single Electron
 SD = int(raw_input("Single Electron (0) or Double Beta (1) - 0 or 1\n"))
@@ -29,32 +27,40 @@ while 1:
 
     # Get the plot then show it
 
-    # Old plot function
-    # the_main_plot = plot.main_plot(file)
-    # the_main_plot.show()
+    if Lines:
+        lineRadious = input('What radious (try 1 and go from there)\n')
+        lineRadious = int(lineRadious)
+    else:
+        lineRadious = 0
+
+    the_main_plot = plot.main_plot(file, lineRadious)
+    the_main_plot.show()
 
     # Best function name ever
-    plotly_plot.PlotlyPlotPloter(file, Lines)
+    # plotly_plot.PlotlyPlotPloter(file, Lines)
 
     # ask if user wants to continue
-    action = raw_input("1. Same type again? [enter]\n2. Different type\n3. Toggle Lines\n4. Quit App\n")
-
-    # Find a new one of the same type
-    if (int(action)) == 1 or action == '':
-        DataFilePool = learn_functions.findRandomEntry(SD)
+    action = raw_input("1. Same type again? [enter]\n2. Same one\n3. Different type\n4. Toggle Lines\n5. Quit App\n")
+    if action == '':
+        action = 1
     # Switch path type
-    if int(action) == 2:
+    if int(action) == 1:
+        DataFilePool = learn_functions.findRandomEntry(SD)
+    elif int(action) == 2:
+        # Nothing to do
+        print "ok"
+    elif int(action) == 3:
         if SD == 1:
             SD = 0
         else:
             SD = 1
         DataFilePool = learn_functions.findRandomEntry(SD)
-    if int(action) == 3:
+    elif int(action) == 4:
         if Lines == 1:
             Lines = 0
         else:
             Lines = 1
     # Quit
-    if int(action) == 4:
+    elif int(action) == 5:
         print "Goodbye"
         sys.exit()

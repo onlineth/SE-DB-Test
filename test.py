@@ -5,10 +5,8 @@ import random
 import os
 import datetime
 from datetime import datetime
-import plotly_plot
-
-# Old plot function
-# import plot
+# import plotly_plot
+import plot
 
 # Initial message
 print "Please read everything that is printed on this terminal at least once"
@@ -60,11 +58,11 @@ while 1:
     # Get the plot then show it
 
     # Old plot function
-    # the_main_plot = plot.main_plot(file)
-    # the_main_plot.show()
+    the_main_plot = plot.main_plot(file)
+    the_main_plot.show()
 
     # Best function name ever
-    plotly_plot.PlotlyPlotPloter(file)
+    # plotly_plot.PlotlyPlotPloter(file)
 
     # At this point the plot window has been closed, let's ask a few questions
     while 1:
