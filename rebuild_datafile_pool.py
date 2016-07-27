@@ -4,6 +4,8 @@
 # it will not readd the same entry.
 # This script should not take long, it can process about 5K per second
 
+# Prints majors events
+
 import sqlite3
 import glob
 import os
@@ -13,9 +15,11 @@ from datetime import datetime
 
 # Connect to the database
 conn = sqlite3.connect("database.db")
+print "Connected to Database"
 
 # Get a connection cursor for the database
 cursor = conn.cursor()
+print "Created a Cursor"
 
 # get the Script Directory
 script_dir = os.path.dirname(__file__)
@@ -24,6 +28,7 @@ script_dir = os.path.dirname(__file__)
 # The reason for this is if a data file is deleted, it won't remove it from
 # the database but just set it's active attribute to 0
 cursor.execute('UPDATE DataFile_Pool SET Active = 0')
+print "Reset all the active column"
 
 # Stats Counter to show results of the run at the end
 FileandHash = 0
@@ -34,6 +39,8 @@ AddedFiles = 0
 for zone in ['double_beta', 'single_electron']:
     # Change the current directory to the current zone
     os.chdir(script_dir+"/"+zone)
+    print "Changed the directory for "+zone
+
     # Loop over all the .dat files
     for file in glob.glob("*.dat"):
         # Get the hash of the current file
@@ -69,5 +76,10 @@ if FileandHash:
 if AddedFiles:
     print "Added "+str(AddedFiles)+" new files and they've been activated."
 
+print "About to commit"
 # Wish I knew this command when I started:/ (it then pushes the changes to the database)
 conn.commit()
+print "Just commited changes, now closing connection"
+
+# Close the connection
+conn.close()

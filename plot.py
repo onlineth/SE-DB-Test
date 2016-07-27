@@ -3,14 +3,11 @@ from axes3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import subplot
 
 
-def main_plot(file, lineradius=0):
+def main_plot(file, askfortype=0, removelines=1):
     # Main plot function, returns the plot
-
-    # temp
-    # file = 'double_beta/mctruehits_trk_0.dat'
-
     plot_trks = True
 
     evt = 0
@@ -50,55 +47,48 @@ def main_plot(file, lineradius=0):
     for mid in mctrk_ID_temp:
         mctrk_ID.append(int(mid))
 
-    if (plot_trks):
+    fig = plt.figure(figsize=(20, 10))
 
-        fig = plt.figure(figsize=(20, 10))
+    ax3 = fig.add_subplot(111, projection='3d')
+    mctrk_col = []
+    for energy in mctrk_E:
+        mctrk_col.append(1000 * energy)
 
-        ax3 = fig.add_subplot(111, projection='3d')
-        mctrk_col = []
-        for energy in mctrk_E:
-            mctrk_col.append(1000 * energy)
+    psize = 5000 * mctrk_E
 
-        psize = 5000 * mctrk_E
+    # This is the place to add subplots
+    # If real trajectory, don't use any other type except this
+    if (realtrajectory):
+        c = 0
+        for ignore in mctrk_x:
+            if (c + 1 != len(mctrk_x)):
+                ax3.plot([mctrk_x[c], mctrk_x[c+1]], [mctrk_y[c], mctrk_y[c+1]], [mctrk_z[c], mctrk_z[c+1]], linewidth=2, picker=4, c='red', zorder=-1)
+            c += 1
+    else:
+        # Send all this stuff to the subplot function, have it deal with it.
+        if (askfortype):
+            subplot.main()
 
-        dist = 0
-        for i, o, p in zip(mctrk_x, mctrk_y, mctrk_z):
-            point1 = np.array((i, o, p))
-            for j, k, l in zip(mctrk_x, mctrk_y, mctrk_z):
-                if i != j and o != k and p != l:
-                    point2 = np.array((j, k, l))
-                    dist += np.linalg.norm(point1-point2)
+    s3 = ax3.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2)
 
-        # lineradius = (dist/len(mctrk_x))/10050
-        # print lineradius
+    ax3.set_xlabel("x (mm)")
+    ax3.set_ylabel("y (mm)")
+    ax3.set_zlabel("z (mm)")
 
-        for i, o, p in zip(mctrk_x, mctrk_y, mctrk_z):
-            point1 = np.array((i, o, p))
-            for j, k, l in zip(mctrk_x, mctrk_y, mctrk_z):
-                if i != j and o != k and p != l:
-                    point2 = np.array((j, k, l))
-                    dist = np.linalg.norm(point1-point2)
-                    if dist < lineradius:
-                        ax3.plot([i, j], [o, k], [p, l], linewidth=2, picker=4, c='red', zorder=-1)
+    lb_x = ax3.get_xticklabels()
+    lb_y = ax3.get_yticklabels()
+    lb_z = ax3.get_zticklabels()
+    for lb in (lb_x + lb_y + lb_z):
+        lb.set_fontsize(8)
 
-        s3 = ax3.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2)
-
-        ax3.set_xlabel("x (mm)")
-        ax3.set_ylabel("y (mm)")
-        ax3.set_zlabel("z (mm)")
-
-        lb_x = ax3.get_xticklabels()
-        lb_y = ax3.get_yticklabels()
-        lb_z = ax3.get_zticklabels()
-        for lb in (lb_x + lb_y + lb_z):
-            lb.set_fontsize(8)
-
+    if (removelines):
         def on_pick(event):
             event.artist.set_visible(0)
             fig.canvas.draw()
 
         fig.canvas.callbacks.connect('pick_event', on_pick)
-        return plt
+
+    return plt
 
 # Testing
 # main_plot('double_beta/mctruehits_trk_0.dat', 1).show()
