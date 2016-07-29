@@ -5,20 +5,16 @@
 
 ### Folders
 
-- double_beta - The place for the double_beta data files
-- single_electron - The place for the single_electron files
+- double\_beta - The place for the double_beta data files
+- single\_electron - The place for the single_electron files
 
 ### Files
 
+- START.py - The main function that should be executed by the end user
 - createDatabase.py - Creates the database with the 3 tables needed for this application
 - database.db - The actual SQLite database file
-- **learn.py** - A place to give any user random plots of their choosing (single or double) to help them learn what types of paths look like
-- plot.py - Contains the plotting function
-- plot.pyc - Temporary plotting data, can be ignored
 - rebuild_datafile_pool.py - Used to rebuild the DataFile_Pool table. No data files will every be removed from this table but they will be activated/unactivated depending on if they still exist on the file system.
-- **test.py** - A script that will test the user by providing random electron paths and asking them to discern whether they are the path of a double beta or a single electron.
-- **users.py** - User mangement script, can: add, remove, and rename users.
-
+- plot.py - Contains the plotting function
 
 ## Database Structure
 

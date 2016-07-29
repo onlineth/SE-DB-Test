@@ -32,7 +32,7 @@ import numpy as np
 from matplotlib.colors import Normalize, colorConverter, LightSource
 
 
-from mpl_toolkits.mplot3d  import art3d
+from mpl_toolkits.mplot3d import art3d
 from mpl_toolkits.mplot3d import proj3d
 from mpl_toolkits.mplot3d import axis3d
 
@@ -40,6 +40,7 @@ from mpl_toolkits.mplot3d import axis3d
 def unit_bbox():
     box = Bbox(np.array([[0, 0], [1, 1]]))
     return box
+
 
 class Axes3D(Axes):
     """
@@ -106,13 +107,13 @@ class Axes3D(Axes):
         # func used to format z -- fall back on major formatters
         self.fmt_zdata = None
 
-        if zscale is not None :
+        if zscale is not None:
             self.set_zscale(zscale)
 
-        if self.zaxis is not None :
+        if self.zaxis is not None:
             self._zcid = self.zaxis.callbacks.connect('units finalize',
                                                       self.relim)
-        else :
+        else:
             self._zcid = None
 
         self._ready = 1
@@ -192,26 +193,26 @@ class Axes3D(Axes):
     def _init_axis(self):
         '''Init 3D axes; overrides creation of regular X/Y axes'''
         self.w_xaxis = axis3d.XAxis('x', self.xy_viewLim.intervalx,
-                            self.xy_dataLim.intervalx, self)
+                                    self.xy_dataLim.intervalx, self)
         self.xaxis = self.w_xaxis
         self.w_yaxis = axis3d.YAxis('y', self.xy_viewLim.intervaly,
-                            self.xy_dataLim.intervaly, self)
+                                    self.xy_dataLim.intervaly, self)
         self.yaxis = self.w_yaxis
         self.w_zaxis = axis3d.ZAxis('z', self.zz_viewLim.intervalx,
-                            self.zz_dataLim.intervalx, self)
+                                    self.zz_dataLim.intervalx, self)
         self.zaxis = self.w_zaxis
 
         for ax in self.xaxis, self.yaxis, self.zaxis:
             ax.init3d()
 
     def get_children(self):
-        return [self.zaxis,] + Axes.get_children(self)
+        return [self.zaxis, ] + Axes.get_children(self)
 
     def unit_cube(self, vals=None):
         minx, maxx, miny, maxy, minz, maxz = vals or self.get_w_lims()
         xs, ys, zs = ([minx, maxx, maxx, minx, minx, maxx, maxx, minx],
-                    [miny, miny, maxy, maxy, miny, miny, maxy, maxy],
-                    [minz, minz, minz, minz, maxz, maxz, maxz, maxz])
+                      [miny, miny, maxy, maxy, miny, miny, maxy, maxy],
+                      [minz, minz, minz, minz, maxz, maxz, maxz, maxz])
         return list(zip(xs, ys, zs))
 
     def tunit_cube(self, vals=None, M=None):
@@ -252,15 +253,15 @@ class Axes3D(Axes):
         renderer.get_axis_position = self.get_axis_position
 
         # Calculate projection of collections and zorder them
-        zlist = [(col.do_3d_projection(renderer), col) \
+        zlist = [(col.do_3d_projection(renderer), col)
                  for col in self.collections]
         zlist.sort(key=itemgetter(0), reverse=True)
         for i, (z, col) in enumerate(zlist):
             col.zorder = i
 
         # Calculate projection of patches and zorder them
-        zlist = [(patch.do_3d_projection(renderer), patch) \
-                for patch in self.patches]
+        zlist = [(patch.do_3d_projection(renderer), patch)
+                 for patch in self.patches]
         zlist.sort(key=itemgetter(0), reverse=True)
         for i, (z, patch) in enumerate(zlist):
             patch.zorder = i
@@ -288,7 +289,7 @@ class Axes3D(Axes):
     def update_datalim(self, xys, **kwargs):
         pass
 
-    def get_autoscale_on(self) :
+    def get_autoscale_on(self):
         """
         Get whether autoscaling is applied for all axes on plot commands
 
@@ -297,7 +298,7 @@ class Axes3D(Axes):
         """
         return Axes.get_autoscale_on(self) and self.get_autoscalez_on()
 
-    def get_autoscalez_on(self) :
+    def get_autoscalez_on(self):
         """
         Get whether autoscaling for the z-axis is applied on plot commands
 
@@ -306,7 +307,7 @@ class Axes3D(Axes):
         """
         return self._autoscaleZon
 
-    def set_autoscale_on(self, b) :
+    def set_autoscale_on(self, b):
         """
         Set whether autoscaling is applied on plot commands
 
@@ -318,7 +319,7 @@ class Axes3D(Axes):
         Axes.set_autoscale_on(self, b)
         self.set_autoscalez_on(b)
 
-    def set_autoscalez_on(self, b) :
+    def set_autoscalez_on(self, b):
         """
         Set whether autoscaling for the z-axis is applied on plot commands
 
@@ -329,7 +330,7 @@ class Axes3D(Axes):
         """
         self._autoscalez_on = b
 
-    def set_zmargin(self, m) :
+    def set_zmargin(self, m):
         """
         Set padding of Z data limits prior to autoscaling.
 
@@ -341,11 +342,11 @@ class Axes3D(Axes):
         .. versionadded :: 1.1.0
             This function was added, but not tested. Please report any bugs.
         """
-        if m < 0 or m > 1 :
+        if m < 0 or m > 1:
             raise ValueError("margin must be in range 0 to 1")
         self._zmargin = m
 
-    def margins(self, *args, **kw) :
+    def margins(self, *args, **kw):
         """
         Convenience method to set or retrieve autoscaling margins.
 
@@ -409,9 +410,9 @@ class Axes3D(Axes):
         scalez = (mz is not None)
 
         self.autoscale_view(tight=tight, scalex=scalex, scaley=scaley,
-                                         scalez=scalez)
+                            scalez=scalez)
 
-    def autoscale(self, enable=True, axis='both', tight=None) :
+    def autoscale(self, enable=True, axis='both', tight=None):
         """
         Convenience method for simple axis view autoscaling.
         See :meth:`matplotlib.axes.Axes.autoscale` for full explanation.
@@ -440,7 +441,7 @@ class Axes3D(Axes):
                 self._autoscaleZon = bool(enable)
                 scalez = self._autoscaleZon
         self.autoscale_view(tight=tight, scalex=scalex, scaley=scaley,
-                                         scalez=scalez)
+                            scalez=scalez)
 
     def auto_scale_xyz(self, X, Y, Z=None, had_data=None):
         x, y, z = list(map(np.asarray, (X, Y, Z)))
@@ -462,7 +463,7 @@ class Axes3D(Axes):
         self.autoscale_view()
 
     def autoscale_view(self, tight=None, scalex=True, scaley=True,
-                             scalez=True) :
+                       scalez=True):
         """
         Autoscale the view limits using the data limits.
         See :meth:`matplotlib.axes.Axes.autoscale_view` for documentation.
@@ -484,9 +485,9 @@ class Axes3D(Axes):
         # of data and decides how to scale the view portal to fit it.
         if tight is None:
             # if image data only just use the datalim
-            _tight = self._tight or (len(self.images)>0 and
-                                     len(self.lines)==0 and
-                                     len(self.patches)==0)
+            _tight = self._tight or (len(self.images) > 0 and
+                                     len(self.lines) == 0 and
+                                     len(self.patches) == 0)
         else:
             _tight = self._tight = bool(tight)
 
@@ -500,7 +501,7 @@ class Axes3D(Axes):
                 x0, x1 = xlocator.nonsingular(x0, x1)
             except AttributeError:
                 x0, x1 = mtransforms.nonsingular(x0, x1, increasing=False,
-                                                         expander=0.05)
+                                                 expander=0.05)
             if self._xmargin > 0:
                 delta = (x1 - x0) * self._xmargin
                 x0 -= delta
@@ -519,7 +520,7 @@ class Axes3D(Axes):
                 y0, y1 = ylocator.nonsingular(y0, y1)
             except AttributeError:
                 y0, y1 = mtransforms.nonsingular(y0, y1, increasing=False,
-                                                         expander=0.05)
+                                                 expander=0.05)
             if self._ymargin > 0:
                 delta = (y1 - y0) * self._ymargin
                 y0 -= delta
@@ -538,7 +539,7 @@ class Axes3D(Axes):
                 z0, z1 = zlocator.nonsingular(z0, z1)
             except AttributeError:
                 z0, z1 = mtransforms.nonsingular(z0, z1, increasing=False,
-                                                         expander=0.05)
+                                                 expander=0.05)
             if self._zmargin > 0:
                 delta = (z1 - z0) * self._zmargin
                 z0 -= delta
@@ -593,8 +594,8 @@ class Axes3D(Axes):
 
         if left == right:
             warnings.warn(('Attempting to set identical left==right results\n'
-                     'in singular transformations; automatically expanding.\n'
-                     'left=%s, right=%s') % (left, right))
+                           'in singular transformations; automatically expanding.\n'
+                           'left=%s, right=%s') % (left, right))
         left, right = mtransforms.nonsingular(left, right, increasing=False)
         left, right = self.xaxis.limit_range_for_scale(left, right)
         self.xy_viewLim.intervalx = (left, right)
@@ -608,14 +609,13 @@ class Axes3D(Axes):
             for other in self._shared_x_axes.get_siblings(self):
                 if other is not self:
                     other.set_xlim(self.xy_viewLim.intervalx,
-                                            emit=False, auto=auto)
+                                   emit=False, auto=auto)
                     if (other.figure != self.figure and
                         other.figure.canvas is not None):
                         other.figure.canvas.draw_idle()
 
         return left, right
     set_xlim = set_xlim3d
-
 
     def set_ylim3d(self, bottom=None, top=None, emit=True, auto=False, **kw):
         """
@@ -648,8 +648,8 @@ class Axes3D(Axes):
 
         if top == bottom:
             warnings.warn(('Attempting to set identical bottom==top results\n'
-                     'in singular transformations; automatically expanding.\n'
-                     'bottom=%s, top=%s') % (bottom, top))
+                           'in singular transformations; automatically expanding.\n'
+                           'bottom=%s, top=%s') % (bottom, top))
         bottom, top = mtransforms.nonsingular(bottom, top, increasing=False)
         bottom, top = self.yaxis.limit_range_for_scale(bottom, top)
         self.xy_viewLim.intervaly = (bottom, top)
@@ -663,7 +663,7 @@ class Axes3D(Axes):
             for other in self._shared_y_axes.get_siblings(self):
                 if other is not self:
                     other.set_ylim(self.xy_viewLim.intervaly,
-                                            emit=False, auto=auto)
+                                   emit=False, auto=auto)
                     if (other.figure != self.figure and
                         other.figure.canvas is not None):
                         other.figure.canvas.draw_idle()
@@ -702,8 +702,8 @@ class Axes3D(Axes):
 
         if top == bottom:
             warnings.warn(('Attempting to set identical bottom==top results\n'
-                     'in singular transformations; automatically expanding.\n'
-                     'bottom=%s, top=%s') % (bottom, top))
+                           'in singular transformations; automatically expanding.\n'
+                           'bottom=%s, top=%s') % (bottom, top))
         bottom, top = mtransforms.nonsingular(bottom, top, increasing=False)
         bottom, top = self.zaxis.limit_range_for_scale(bottom, top)
         self.zz_viewLim.intervalx = (bottom, top)
@@ -717,7 +717,7 @@ class Axes3D(Axes):
             for other in self._shared_z_axes.get_siblings(self):
                 if other is not self:
                     other.set_zlim(self.zz_viewLim.intervalx,
-                                            emit=False, auto=auto)
+                                   emit=False, auto=auto)
                     if (other.figure != self.figure and
                         other.figure.canvas is not None):
                         other.figure.canvas.draw_idle()
@@ -748,7 +748,7 @@ class Axes3D(Axes):
         return self.zz_viewLim.intervalx
     get_zlim = get_zlim3d
 
-    def get_zscale(self) :
+    def get_zscale(self):
         """
         Return the zaxis scale string %s
 
@@ -759,7 +759,7 @@ class Axes3D(Axes):
 
     # We need to slightly redefine these to pass scalez=False
     # to their calls of autoscale_view.
-    def set_xscale(self, value, **kwargs) :
+    def set_xscale(self, value, **kwargs):
         self.xaxis._set_scale(value, **kwargs)
         self.autoscale_view(scaley=False, scalez=False)
         self._update_transScale()
@@ -769,7 +769,7 @@ class Axes3D(Axes):
             This function was added, but not tested. Please report any bugs.
         """
 
-    def set_yscale(self, value, **kwargs) :
+    def set_yscale(self, value, **kwargs):
         self.yaxis._set_scale(value, **kwargs)
         self.autoscale_view(scalex=False, scalez=False)
         self._update_transScale()
@@ -780,7 +780,7 @@ class Axes3D(Axes):
         """
 
     @docstring.dedent_interpd
-    def set_zscale(self, value, **kwargs) :
+    def set_zscale(self, value, **kwargs):
         """
         call signature::
 
@@ -829,7 +829,7 @@ class Axes3D(Axes):
         """
         return self.zaxis.get_ticklocs(minor=minor)
 
-    def get_zmajorticklabels(self) :
+    def get_zmajorticklabels(self):
         """
         Get the ztick labels as a list of Text instances
 
@@ -838,7 +838,7 @@ class Axes3D(Axes):
         return cbook.silent_list('Text zticklabel',
                                  self.zaxis.get_majorticklabels())
 
-    def get_zminorticklabels(self) :
+    def get_zminorticklabels(self):
         """
         Get the ztick labels as a list of Text instances
 
@@ -851,7 +851,7 @@ class Axes3D(Axes):
         return cbook.silent_list('Text zticklabel',
                                  self.zaxis.get_minorticklabels())
 
-    def set_zticklabels(self, *args, **kwargs) :
+    def set_zticklabels(self, *args, **kwargs):
         """
         Set z-axis tick labels.
         See :meth:`matplotlib.axes.Axes.set_yticklabels` for more details.
@@ -863,7 +863,7 @@ class Axes3D(Axes):
         """
         return self.zaxis.set_ticklabels(*args, **kwargs)
 
-    def get_zticklabels(self, minor=False) :
+    def get_zticklabels(self, minor=False):
         """
         Get ztick labels as a list of Text instances.
         See :meth:`matplotlib.axes.Axes.get_yticklabels` for more details.
@@ -876,7 +876,7 @@ class Axes3D(Axes):
         return cbook.silent_list('Text zticklabel',
                                  self.zaxis.get_ticklabels(minor=minor))
 
-    def zaxis_date(self, tz=None) :
+    def zaxis_date(self, tz=None):
         """
         Sets up z-axis ticks and labels that treat the z data as dates.
 
@@ -893,7 +893,7 @@ class Axes3D(Axes):
         """
         self.zaxis.axis_date(tz)
 
-    def get_zticklines(self) :
+    def get_zticklines(self):
         """
         Get ztick lines as a list of Line2D instances.
         Note that this function is provided merely for completeness.
@@ -1016,7 +1016,7 @@ class Axes3D(Axes):
         self._rotate_btn = np.atleast_1d(rotate_btn).tolist()
         self._zoom_btn = np.atleast_1d(zoom_btn).tolist()
 
-    def can_zoom(self) :
+    def can_zoom(self):
         """
         Return *True* if this axes supports the zoom box button functionality.
 
@@ -1024,7 +1024,7 @@ class Axes3D(Axes):
         """
         return False
 
-    def can_pan(self) :
+    def can_pan(self):
         """
         Return *True* if this axes supports the pan/zoom button functionality.
 
@@ -1038,7 +1038,7 @@ class Axes3D(Axes):
         """
         # Disabling mouse interaction might have been needed a long
         # time ago, but I can't find a reason for it now - BVR (2012-03)
-        #self.disable_mouse_rotation()
+        # self.disable_mouse_rotation()
         self.zaxis.cla()
 
         if self._sharez is not None:
@@ -1080,7 +1080,8 @@ class Axes3D(Axes):
         :attr:`fmt_zdata` attribute if it is callable, else will fall
         back on the zaxis major formatter
         """
-        try: return self.fmt_zdata(z)
+        try:
+            return self.fmt_zdata(z)
         except (AttributeError, TypeError):
             func = self.zaxis.get_major_formatter().format_data_short
             val = func(z)
@@ -1102,9 +1103,9 @@ class Axes3D(Axes):
 
         p = (xd, yd)
         edges = self.tunit_edges()
-        #lines = [proj3d.line2d(p0,p1) for (p0,p1) in edges]
-        ldists = [(proj3d.line2d_seg_dist(p0, p1, p), i) for \
-                i, (p0, p1) in enumerate(edges)]
+        # lines = [proj3d.line2d(p0,p1) for (p0,p1) in edges]
+        ldists = [(proj3d.line2d_seg_dist(p0, p1, p), i) for
+                  i, (p0, p1) in enumerate(edges)]
         ldists.sort()
         # nearest edge
         edgei = ldists[0][1]
@@ -1159,7 +1160,7 @@ class Axes3D(Axes):
             self.azim = art3d.norm_angle(self.azim - (dx/w)*180)
             self.get_proj()
             self.figure.canvas.draw_idle()
-            #AP   force rotation of all siblings sharing x axis
+            # AP   force rotation of all siblings sharing x axis
             for all in self._shared_z_axes.get_siblings(self):
                 all.elev = self.elev
                 all.azim = self.azim
@@ -1197,10 +1198,11 @@ class Axes3D(Axes):
         '''
         # FIXME: With a rework of axis3d.py, the labelpad should work again
         #        At that point, remove the above message in the docs.
-        if labelpad is not None : self.zaxis.labelpad = labelpad
+        if labelpad is not None:
+            self.zaxis.labelpad = labelpad
         return self.zaxis.set_label_text(zlabel, fontdict, **kwargs)
 
-    def get_zlabel(self) :
+    def get_zlabel(self):
         """
         Get the z-label text string.
 
@@ -1210,7 +1212,7 @@ class Axes3D(Axes):
         label = self.zaxis.get_label()
         return label.get_text()
 
-    #### Axes rectangle characteristics
+    # ### Axes rectangle characteristics
 
     def get_frame_on(self):
         """
@@ -1269,11 +1271,11 @@ class Axes3D(Axes):
             This function was changed, but not tested. Please report any bugs.
         '''
         # TODO: Operate on each axes separately
-        if len(kwargs) :
+        if len(kwargs):
             b = True
         self._draw_grid = cbook._string_to_bool(b)
 
-    def ticklabel_format(self, **kwargs) :
+    def ticklabel_format(self, **kwargs):
         """
         Convenience method for manipulating the ScalarFormatter
         used by default for linear axes in Axed3D objects.
@@ -1316,7 +1318,7 @@ class Axes3D(Axes):
                     self.xaxis.major.formatter.set_scientific(sb)
                 if axis in ['both', 'y']:
                     self.yaxis.major.formatter.set_scientific(sb)
-                if axis in ['both', 'z'] :
+                if axis in ['both', 'z']:
                     self.zaxis.major.formatter.set_scientific(sb)
             if scilimits is not None:
                 if axis in ['both', 'x']:
@@ -1336,7 +1338,7 @@ class Axes3D(Axes):
             raise AttributeError(
                 "This method only works with the ScalarFormatter.")
 
-    def locator_params(self, axis='both', tight=None, **kwargs) :
+    def locator_params(self, axis='both', tight=None, **kwargs):
         """
         Convenience method for controlling tick locators.
 
@@ -1361,7 +1363,7 @@ class Axes3D(Axes):
             self.zaxis.get_major_locator().set_params(**kwargs)
         self.autoscale_view(tight=tight, scalex=_x, scaley=_y, scalez=_z)
 
-    def tick_params(self, axis='both', **kwargs) :
+    def tick_params(self, axis='both', **kwargs):
         """
         Convenience method for changing the appearance of ticks and
         tick labels.
@@ -1389,7 +1391,7 @@ class Axes3D(Axes):
             This function was added, but not tested. Please report any bugs.
         """
         Axes.tick_params(self, axis, **kwargs)
-        if axis in ['z', 'both'] :
+        if axis in ['z', 'both']:
             zkw = dict(kwargs)
             zkw.pop('top', None)
             zkw.pop('bottom', None)
@@ -1397,7 +1399,7 @@ class Axes3D(Axes):
             zkw.pop('labelbottom', None)
             self.zaxis.set_tick_params(**zkw)
 
-    ### data limits, ticks, tick labels, and formatting
+    # ## data limits, ticks, tick labels, and formatting
 
     def invert_zaxis(self):
         """
@@ -1444,25 +1446,25 @@ class Axes3D(Axes):
             This function was added, but not tested. Please report any bugs.
         """
         if upper is None and cbook.iterable(lower):
-            lower,upper = lower
+            lower, upper = lower
 
-        old_lower,old_upper = self.get_zbound()
+        old_lower, old_upper = self.get_zbound()
 
-        if lower is None: lower = old_lower
-        if upper is None: upper = old_upper
+        if lower is None:
+            lower = old_lower
+        if upper is None:
+            upper = old_upper
 
         if self.zaxis_inverted():
             if lower < upper:
                 self.set_zlim(upper, lower, auto=None)
             else:
                 self.set_zlim(lower, upper, auto=None)
-        else :
+        else:
             if lower < upper:
                 self.set_zlim(lower, upper, auto=None)
-            else :
+            else:
                 self.set_zlim(upper, lower, auto=None)
-
-
 
     def text(self, x, y, z, s, zdir=None, **kwargs):
         '''
@@ -1510,12 +1512,12 @@ class Axes3D(Axes):
         argsi = 0
         # First argument is array of zs
         if len(args) > 0 and cbook.iterable(args[0]) and \
-                len(xs) == len(args[0]) :
+                len(xs) == len(args[0]):
             # So, we know that it is an array with
             # first dimension the same as xs.
             # Next, check to see if the data contained
             # therein (if any) is scalar (and not another array).
-            if len(args[0]) == 0 or cbook.is_scalar(args[0][0]) :
+            if len(args[0]) == 0 or cbook.is_scalar(args[0][0]):
                 zs = args[argsi]
                 argsi += 1
 
@@ -1599,7 +1601,7 @@ class Axes3D(Axes):
 
         polys = []
         # Only need these vectors to shade if there is no cmap
-        if cmap is None and shade :
+        if cmap is None and shade:
             totpts = int(np.ceil(float(rows - 1) / rstride) *
                          np.ceil(float(cols - 1) / cstride))
             v1 = np.empty((totpts, 3))
@@ -1607,14 +1609,13 @@ class Axes3D(Axes):
             # This indexes the vertex points
             which_pt = 0
 
-
-        #colset contains the data for coloring: either average z or the facecolor
+        # colset contains the data for coloring: either average z or the facecolor
         colset = []
         for rs in xrange(0, rows-1, rstride):
             for cs in xrange(0, cols-1, cstride):
                 ps = []
-                for a in (X, Y, Z) :
-                    ztop = a[rs,cs:min(cols, cs+cstride+1)]
+                for a in (X, Y, Z):
+                    ztop = a[rs, cs:min(cols, cs+cstride+1)]
                     zleft = a[rs+1:min(rows, rs+rstride+1),
                               min(cols-1, cs+cstride)]
                     zbase = a[min(rows-1, rs+rstride), cs:min(cols, cs+cstride+1):][::-1]
@@ -1643,7 +1644,7 @@ class Axes3D(Axes):
                     which_pt += 1
         if cmap is None and shade:
             normals = np.cross(v1, v2)
-        else :
+        else:
             normals = []
 
         polyc = art3d.Poly3DCollection(polys, *args, **kwargs)
@@ -1757,14 +1758,14 @@ class Axes3D(Axes):
         cii = list(xrange(0, cols, cstride))
 
         # Add the last index only if needed
-        if rows > 0 and rii[-1] != (rows - 1) :
+        if rows > 0 and rii[-1] != (rows - 1):
             rii += [rows-1]
-        if cols > 0 and cii[-1] != (cols - 1) :
+        if cols > 0 and cii[-1] != (cols - 1):
             cii += [cols-1]
 
         # If the inputs were empty, then just
         # reset everything.
-        if Z.size == 0 :
+        if Z.size == 0:
             rii = []
             cii = []
 
@@ -1776,9 +1777,9 @@ class Axes3D(Axes):
         tylines = [tY[i] for i in cii]
         tzlines = [tZ[i] for i in cii]
 
-        lines = [list(zip(xl, yl, zl)) for xl, yl, zl in \
+        lines = [list(zip(xl, yl, zl)) for xl, yl, zl in
                  zip(xlines, ylines, zlines)]
-        lines += [list(zip(xl, yl, zl)) for xl, yl, zl in \
+        lines += [list(zip(xl, yl, zl)) for xl, yl, zl in
                   zip(txlines, tylines, tzlines)]
 
         linec = art3d.Line3DCollection(lines, *args, **kwargs)
@@ -1874,13 +1875,13 @@ class Axes3D(Axes):
 
         colset = []
         for i in xrange(len(verts)):
-            avgzsum = verts[i,0,2] + verts[i,1,2] + verts[i,2,2]
+            avgzsum = verts[i, 0, 2] + verts[i, 1, 2] + verts[i, 2, 2]
             colset.append(avgzsum / 3.0)
 
             # Only need vectors to shade if no cmap
             if cmap is None and shade:
-                v1[which_pt] = np.array(verts[i,0]) - np.array(verts[i,1])
-                v2[which_pt] = np.array(verts[i,1]) - np.array(verts[i,2])
+                v1[which_pt] = np.array(verts[i, 0]) - np.array(verts[i, 1])
+                v2[which_pt] = np.array(verts[i, 1]) - np.array(verts[i, 2])
                 which_pt += 1
 
         if cmap is None and shade:
@@ -1938,9 +1939,9 @@ class Axes3D(Axes):
                 i1 = int(round(i * stepsize))
                 i2 = int(round((i + 1) * stepsize))
                 polyverts.append([topverts[0][i1],
-                    topverts[0][i2],
-                    botverts[0][i2],
-                    botverts[0][i1]])
+                                 topverts[0][i2],
+                                 botverts[0][i2],
+                                 botverts[0][i1]])
 
                 v1 = np.array(topverts[0][i1]) - np.array(topverts[0][i2])
                 v2 = np.array(topverts[0][i1]) - np.array(botverts[0][i1])
@@ -1967,10 +1968,10 @@ class Axes3D(Axes):
                     z = offset
                 art3d.line_collection_2d_to_3d(linec, z, zdir=zdir)
 
-    def add_contourf_set(self, cset, zdir='z', offset=None) :
+    def add_contourf_set(self, cset, zdir='z', offset=None):
         zdir = '-' + zdir
-        for z, linec in zip(cset.levels, cset.collections) :
-            if offset is not None :
+        for z, linec in zip(cset.levels, cset.collections):
+            if offset is not None:
                 z = offset
             art3d.poly_collection_2d_to_3d(linec, z, zdir=zdir)
             linec.set_sort_zpos(z)
@@ -2168,9 +2169,9 @@ class Axes3D(Axes):
             - PatchCollection
         '''
         zvals = np.atleast_1d(zs)
-        if len(zvals) > 0 :
+        if len(zvals) > 0:
             zsortval = min(zvals)
-        else :
+        else:
             zsortval = 0   # FIXME: Fairly arbitrary. Is there a better value?
 
         # FIXME: use issubclass() (although, then a 3D collection
@@ -2237,7 +2238,7 @@ class Axes3D(Axes):
                 zs = np.tile(zs[0], xs.size)
             else:
                 raise ValueError(("Argument 'zs' must be of same size as 'xs' "
-                    "and 'ys' or of size 1."))
+                                  "and 'ys' or of size 1."))
 
         s = np.ma.ravel(s)  # This doesn't have to match x, y in size.
 
@@ -2261,7 +2262,7 @@ class Axes3D(Axes):
         if self._zmargin < 0.05 and xs.size > 0:
             self.set_zmargin(0.05)
 
-        #FIXME: why is this necessary?
+        # FIXME: why is this necessary?
         if not is_2d:
             self.auto_scale_xyz(xs, ys, zs, had_data)
 
@@ -2306,12 +2307,12 @@ class Axes3D(Axes):
             if 'alpha' in kwargs:
                 p.set_alpha(kwargs['alpha'])
 
-        if len(verts) > 0 :
+        if len(verts) > 0:
             # the following has to be skipped if verts is empty
             # NOTE: Bugs could still occur if len(verts) > 0,
             #       but the "2nd dimension" is empty.
             xs, ys = list(zip(*verts))
-        else :
+        else:
             xs, ys = [], []
 
         xs, ys, verts_zs = art3d.juggle_axes(xs, ys, verts_zs, zdir)
@@ -2505,13 +2506,13 @@ class Axes3D(Axes):
                                [z*x*(1-c)-y*s, z*y*(1-c)+x*s, c+(z**2)*(1-c)]])
 
                 # construct the column vector for (u,v,w)
-                line = np.matrix([[u],[v],[w]])
+                line = np.matrix([[u], [v], [w]])
 
                 # use numpy to multiply them to get the rotated vector
                 rotatedline = R*line
 
                 # return the rotated (u,v,w) from the computed matrix
-                return (rotatedline[0,0], rotatedline[1,0], rotatedline[2,0])
+                return (rotatedline[0, 0], rotatedline[1, 0], rotatedline[2, 0])
 
             # compute and return the two arrowhead direction unit vectors
             return rotatefunction(angle), rotatefunction(-angle)
@@ -2638,7 +2639,7 @@ def get_test_data(delta=0.05):
     Return a tuple X, Y, Z with a test data set.
     '''
 
-    from matplotlib.mlab import  bivariate_normal
+    from matplotlib.mlab import bivariate_normal
     x = y = np.arange(-3.0, 3.0, delta)
     X, Y = np.meshgrid(x, y)
 
@@ -2651,11 +2652,9 @@ def get_test_data(delta=0.05):
     Z = Z * 500
     return X, Y, Z
 
-
-
-########################################################
+# #######################################################
 # Register Axes3D as a 'projection' object available
 # for use just like any other axes
-########################################################
+# #######################################################
 import matplotlib.projections as proj
 proj.projection_registry.register(Axes3D)

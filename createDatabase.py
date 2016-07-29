@@ -1,5 +1,6 @@
 # Run this file once and never return
-
+import datetime
+from datetime import datetime
 import sqlite3
 
 # Connect to the database
@@ -22,8 +23,8 @@ cursor.execute("""CREATE TABLE `DataFile_Pool` (
 # Create the ResultEnrty Table
 cursor.execute("""CREATE TABLE "ResultEntry" (
  `ResultID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
- `UserID` INTEGER NOT NULL,
- `DataFileID` INTEGER NOT NULL,
+ `UserID` TEXT NOT NULL,
+ `DataFileHash` TEXT NOT NULL,
  `UserEnrtySD` INTEGER NOT NULL,
  `CorrectSD` INTEGER NOT NULL,
  `ConfidenceLevel` INTEGER NOT NULL,
@@ -37,6 +38,9 @@ cursor.execute("""CREATE TABLE "Users" (
  `FullName` TEXT NOT NULL UNIQUE,
  `DateTime` TEXT NOT NULL
 )""")
+
+# Add the anonymous User
+cursor.execute("INSERT INTO Users (UserID, FullName, DateTime) VALUES (0, '%s', '%s')" % ('anonymous', "{:%Y-%m-%d %H:%M}".format(datetime.now())))
 
 # Commit the chances so they stick
 conn.commit()
