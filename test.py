@@ -5,7 +5,7 @@ import os
 import datetime
 from datetime import datetime
 import functions
-import plot
+import method_plot
 
 # Uses SQLite for the database
 # http://sqlitebrowser.org/ is an awesome GUI browser
@@ -17,6 +17,12 @@ cursor = conn.cursor()
 
 
 def test(UserID):
+
+    # Getting ready
+    print "Here is the graph, make a prediction whether it is a single electron or a double beta"
+    print "When done close the graph window and follow the prompt"
+    raw_input('ok [click enter]')
+
     while 1:
         # clears the terminal
         functions.clearTerm()
@@ -28,19 +34,14 @@ def test(UserID):
         ORDER BY RANDOM()
         LIMIT 1""" % (str(UserID))).fetchall()
 
-        # Getting ready
-        print "Here is the graph, make a prediction whether it is a single electron or a double beta"
-        print "When done close the graph window and follow the prompt"
-
         # Get the file path
         if DataFilePool[0][1]:
             file = 'double_beta/'+str(DataFilePool[0][2])
         else:
             file = 'single_electron/'+str(DataFilePool[0][2])
 
-        # Get the plot then show it
-        the_main_plot = plot.main_plot(file)
-        the_main_plot.show()
+        # Get the plot and let it do it's thing
+        method_plot.main(file, ['Root', 'Mode', 'Scan'])
 
         # At this point the plot window has been closed, let's ask a few questions
         while 1:

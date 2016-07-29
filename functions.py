@@ -2,9 +2,10 @@
 import os
 import sqlite3
 import sys
-import plot
+import learn_plot
 import datetime
 from datetime import datetime
+import method_plot
 
 # Connect to the database (should be in the script directory)
 conn = sqlite3.connect("database.db")
@@ -70,7 +71,7 @@ def learn(SD):
         file = 'single_electron/'+str(DataFilePool[0][2])
         print "This is a Single Electron located at "+file
 
-    the_main_plot = plot.main_plot(file, realtrajectory=Lines, removelines=0)
+    the_main_plot = learn_plot.learn_plot(file, Lines)
     the_main_plot.show()
 
 
@@ -109,5 +110,14 @@ def examine():
     PlotInfo = (cursor.execute("""SELECT DataFileID, SD, FileName, MD5_Hash
         FROM DataFile_Pool
         WHERE Active = 1 and MD5_Hash = '%s'""" % (FileHash)).fetchall())[0]
-    raw_input(PlotInfo)
+
+    # Get the file path
+    if PlotInfo[1]:
+        file = 'double_beta/'+str(PlotInfo[2])
+    else:
+        file = 'single_electron/'+str(PlotInfo[2])
+
+    # Now actually plot it
+    method_plot.main(file, ['Root', 'Mode', 'Examine'])
+
     return 1

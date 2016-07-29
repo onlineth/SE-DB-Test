@@ -1,12 +1,12 @@
 # This file if for plotting the path of the electron
+# File only used for learning
 from axes3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-import subplot
 
 
-def main_plot(file, askfortype=0, removelines=1):
+def learn_plot(file, realtrajectory):
     # Main plot function, returns the plot
     plot_trks = True
 
@@ -62,12 +62,9 @@ def main_plot(file, askfortype=0, removelines=1):
         c = 0
         for ignore in mctrk_x:
             if (c + 1 != len(mctrk_x)):
-                ax3.plot([mctrk_x[c], mctrk_x[c+1]], [mctrk_y[c], mctrk_y[c+1]], [mctrk_z[c], mctrk_z[c+1]], linewidth=2, picker=4, c='red', zorder=-1)
+                ax3.plot([mctrk_x[c], mctrk_x[c+1]], [mctrk_y[c], mctrk_y[c+1]], [mctrk_z[c],
+                         mctrk_z[c+1]], linewidth=2, picker=4, c='red', zorder=-1)
             c += 1
-    else:
-        # Send all this stuff to the subplot function, have it deal with it.
-        if (askfortype):
-            subplot.main()
 
     s3 = ax3.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2)
 
@@ -81,14 +78,4 @@ def main_plot(file, askfortype=0, removelines=1):
     for lb in (lb_x + lb_y + lb_z):
         lb.set_fontsize(8)
 
-    if (removelines):
-        def on_pick(event):
-            event.artist.set_visible(0)
-            fig.canvas.draw()
-
-        fig.canvas.callbacks.connect('pick_event', on_pick)
-
     return plt
-
-# Testing
-# main_plot('double_beta/mctruehits_trk_0.dat', 1).show()
