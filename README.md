@@ -47,6 +47,8 @@
   - DateTime
   - Notes*
      - Any notes associated
+  - LineData
+     - Actual list of the 3D segments of the lines
 
 
 *Not Required
