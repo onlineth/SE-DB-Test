@@ -1,19 +1,17 @@
 import functions
-import user
-import sys
 import test
+import sys
 
 # Starts with the UserID being 0 for anonymous
-global userID
 userID = 0
 
 while 1:
     # Main Root menu
     choice = functions.menu(['User', 'Mode', 'Exit'], 'Root Menu')
-    if (choice == 'User'):
+    if choice == 'User':
         # User
         userID = functions.user()
-    elif (choice == 'Mode'):
+    elif choice == 'Mode':
         # Mode
         while 1:
             choice = functions.menu(['Learn', 'Scan', 'Examine', 'Exit'], "Mode Menu", ['Root'])

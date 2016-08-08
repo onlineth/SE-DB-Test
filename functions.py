@@ -5,7 +5,7 @@ import sys
 import learn_plot
 import datetime
 from datetime import datetime
-import method_plot
+import simplejson
 
 # Connect to the database (should be in the script directory)
 conn = sqlite3.connect("database.db")
@@ -96,16 +96,19 @@ def user():
 
 
 def examine():
+    import method_plot
     while 1:
         graphID = raw_input('What is the graph ID?\n')
         if (graphID.isdigit() == 0):
             raw_input("Incorrect Input, try again (should be an integer above 0)\n[Click Enter]")
         else:
             break
-    FileHash = (cursor.execute("""SELECT DataFileHash
+    FileInfo = (cursor.execute("""SELECT DataFileHash, LineData
     FROM ResultEntry
     WHERE ResultID = %s
-    """ % (str(graphID))).fetchall())[0][0]
+    """ % (str(graphID))).fetchall())[0]
+    FileHash = FileInfo[0]
+    FileData = FileInfo[1]
 
     PlotInfo = (cursor.execute("""SELECT DataFileID, SD, FileName, MD5_Hash
         FROM DataFile_Pool
@@ -117,7 +120,13 @@ def examine():
     else:
         file = 'single_electron/'+str(PlotInfo[2])
 
+    use_old_lines = int(raw_input("Show Lines from Entry?\nNote: Will not allow interactions\n Yes (1) or No (0)\n"))
+
     # Now actually plot it
-    method_plot.main(file, ['Root', 'Mode', 'Examine'])
+    if use_old_lines:
+        the_list_of_data = simplejson.loads(FileData)
+        method_plot.main(file, ['Root', 'Mode', 'Examine'], the_list_of_data)
+    else:
+        method_plot.main(file, ['Root', 'Mode', 'Examine'])
 
     return 1

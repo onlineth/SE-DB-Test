@@ -2,7 +2,6 @@ from axes3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-import subplot
 import functions
 
 

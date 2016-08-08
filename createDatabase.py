@@ -21,16 +21,17 @@ cursor.execute("""CREATE TABLE `DataFile_Pool` (
 )""")
 
 # Create the ResultEnrty Table
-cursor.execute("""CREATE TABLE "ResultEntry" (
- `ResultID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
- `UserID` TEXT NOT NULL,
- `DataFileHash` TEXT NOT NULL,
- `UserEnrtySD` INTEGER NOT NULL,
- `CorrectSD` INTEGER NOT NULL,
- `ConfidenceLevel` INTEGER NOT NULL,
- `DateTime` TEXT NOT NULL,
- `Notes` TEXT
-)""")
+cursor.execute("""CREATE TABLE `ResultEntry` (
+`ResultID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+`UserID`	TEXT NOT NULL,
+`DataFileHash`	TEXT NOT NULL,
+`UserEnrtySD`	INTEGER NOT NULL,
+`CorrectSD`	INTEGER NOT NULL,
+`ConfidenceLevel`	INTEGER NOT NULL,
+`DateTime`	TEXT NOT NULL,
+`Notes`	TEXT,
+`LineData`	TEXT
+);""")
 
 # Create the Users Table
 cursor.execute("""CREATE TABLE "Users" (
