@@ -103,6 +103,7 @@ def main(file, breadcrumbs, old_data=0):
         # Methods are initialized here
 
         if based_radius:
+            global based_radius_data
             based_radius_data = subplotmethods.based_radius(mctrk_x, mctrk_y, mctrk_z)
             based_radius_ax = fig.add_subplot(layout_sub[0], projection='3d',
                                               sharex=ax3, sharey=ax3, sharez=ax3)
@@ -110,22 +111,48 @@ def main(file, breadcrumbs, old_data=0):
             endSubUp(based_radius_ax, mctrk_x, mctrk_y,
                      mctrk_z, mctrk_E, psize, based_radius_data, "option1")
 
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END
+        global option1_point_a
+        option1_point_a = []
 
         def on_pick(event):
             temp_label = event.artist.get_label()
             if temp_label[:6] == "option":
-
-                # !!!!!!!!!!!!!!!!!!! Start
-
+                # Check if it's option1
                 if temp_label[:7] == "option1":
-                    remove_item = ast.literal_eval(temp_label[7:])
-                    based_radius_data.remove(remove_item)
+                    global option1_point_a
+                    global based_radius_data
+                    if (temp_label[7:] and event.mouseevent.button == 1):
+                        # It's a line
+                        # Get the data from the label
+                        remove_item = ast.literal_eval(temp_label[7:])
+                        # If it's in there, remove it
+                        if remove_item in based_radius_data:
+                            based_radius_data.remove(remove_item)
+                        # And then hide it
+                        event.artist.set_visible(0)
+                    elif (event.mouseevent.button == 3 and temp_label[7:] == ''):
+                        # It's a point
+                        ind = event.ind[0]
+                        x, y, z = event.artist._offsets3d
+                        # Check if it has anything in there
+                        if (option1_point_a != []):
+                            if ([x[ind], y[ind], z[ind]] == option1_point_a):
+                                # Clicked on same point, restart
+                                option1_point_a = []
+                            else:
+                                # Second time clicking on a point
+                                temp_line = [[x[ind], option1_point_a[0]], [y[ind], option1_point_a[1]], [z[ind], option1_point_a[2]]]
+                                based_radius_ax.plot([x[ind], option1_point_a[0]], [y[ind], option1_point_a[1]], [z[ind], option1_point_a[2]],
+                                                     linewidth=2, c='red', zorder=-1, label='option1'+str(temp_line), picker=2)
+                                based_radius_data.append(temp_line)
+                                option1_point_a = []
+                        else:
+                            # First time clicking on a point, save it
+                            option1_point_a = [x[ind], y[ind], z[ind]]
 
-                # !!!!!!!!!!!!!!!!!!! End
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END
 
-            event.artist.set_visible(0)
-            fig.canvas.draw()
+                fig.canvas.draw()
 
         fig.canvas.callbacks.connect('pick_event', on_pick)
 
@@ -172,6 +199,7 @@ def main(file, breadcrumbs, old_data=0):
         # Save the data of a specific subplot section
         if (choice == 'Radius Based'):
             save_data = based_radius_data
+            raw_input(len(save_data))
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END
 
@@ -208,12 +236,12 @@ def endSubUp(ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, data=0, axname=0):
             # If there is a label, use it along with the coordinate of the line
             if axname:
                 ax.plot([x[0][0], x[0][1]], [x[1][0], x[1][1]], [x[2][0], x[2][1]],
-                        linewidth=2, picker=10, c='red', zorder=-1, label=axname+str(x))
+                        linewidth=2, c='red', zorder=-1, label=axname+str(x), picker=2)
             else:
                 ax.plot([x[0][0], x[0][1]], [x[1][0], x[1][1]], [x[2][0], x[2][1]],
-                        linewidth=2, picker=10, c='red', zorder=-1)
+                        linewidth=2, c='red', zorder=-1, picker=2)
 
-    ax.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2)
+    ax.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2, label=axname, picker=10)
 
     ax.set_xlabel("x (mm)")
     ax.set_ylabel("y (mm)")
@@ -225,3 +253,5 @@ def endSubUp(ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, data=0, axname=0):
     for lb in (lb_x + lb_y + lb_z):
         lb.set_fontsize(8)
     return 1
+
+main('double_beta/mctruehits_trk_0.dat', [])
