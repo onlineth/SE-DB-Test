@@ -143,7 +143,7 @@ def main(file, breadcrumbs, old_data=0):
                                 # Second time clicking on a point
                                 temp_line = [[x[ind], option1_point_a[0]], [y[ind], option1_point_a[1]], [z[ind], option1_point_a[2]]]
                                 based_radius_ax.plot([x[ind], option1_point_a[0]], [y[ind], option1_point_a[1]], [z[ind], option1_point_a[2]],
-                                                     linewidth=2, c='red', zorder=-1, label='option1'+str(temp_line), picker=2)
+                                                     linewidth=2, c='red', zorder=-1, label='option1'+str(temp_line), picker=10)
                                 based_radius_data.append(temp_line)
                                 option1_point_a = []
                         else:
@@ -180,7 +180,7 @@ def main(file, breadcrumbs, old_data=0):
             if (choice == 'Radius Based'):
                 based_radius_ax.clear()
                 based_radius_data = subplotmethods.based_radius(mctrk_x, mctrk_y, mctrk_z)
-                endSubUp(based_radius_ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, based_radius_data)
+                endSubUp(based_radius_ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, based_radius_data, 'option1')
 
             # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END
 
@@ -199,7 +199,6 @@ def main(file, breadcrumbs, old_data=0):
         # Save the data of a specific subplot section
         if (choice == 'Radius Based'):
             save_data = based_radius_data
-            raw_input(len(save_data))
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END
 
@@ -236,10 +235,10 @@ def endSubUp(ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, data=0, axname=0):
             # If there is a label, use it along with the coordinate of the line
             if axname:
                 ax.plot([x[0][0], x[0][1]], [x[1][0], x[1][1]], [x[2][0], x[2][1]],
-                        linewidth=2, c='red', zorder=-1, label=axname+str(x), picker=2)
+                        linewidth=2, c='red', zorder=-1, label=axname+str(x), picker=10)
             else:
                 ax.plot([x[0][0], x[0][1]], [x[1][0], x[1][1]], [x[2][0], x[2][1]],
-                        linewidth=2, c='red', zorder=-1, picker=2)
+                        linewidth=2, c='red', zorder=-1, picker=10)
 
     ax.scatter(mctrk_x, mctrk_y, mctrk_z, c=psize, cmap='hsv', s=60, zorder=2, label=axname, picker=10)
 
@@ -254,4 +253,4 @@ def endSubUp(ax, mctrk_x, mctrk_y, mctrk_z, mctrk_E, psize, data=0, axname=0):
         lb.set_fontsize(8)
     return 1
 
-main('double_beta/mctruehits_trk_0.dat', [])
+# main('double_beta/mctruehits_trk_0.dat', [])
