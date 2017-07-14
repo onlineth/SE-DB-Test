@@ -22,7 +22,7 @@ cursor = conn.cursor()
 print "Created a Cursor"
 
 # get the Script Directory
-script_dir = os.path.dirname(__file__)
+script_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Deactivate all filenames then reactivate them as they are found again
 # The reason for this is if a data file is deleted, it won't remove it from
