@@ -1,4 +1,4 @@
 .floo*
 *.pyc
-database.db
+database.db*
 .idea/
